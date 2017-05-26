@@ -22,4 +22,10 @@ public class Node {
 		n.next = end;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return ("Node has " + String.valueOf(data));
+	}
+	
 }

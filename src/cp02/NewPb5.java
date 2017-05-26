@@ -12,11 +12,15 @@ import java.util.*;
 //input: A -> B -> C -> D -> E -> C [the same C as earlier]
 //output: C
 
-public class NewPb5 {
+public class NewPb5 extends NewPb1 {
 
 	public static void main(String[] args) 
 	{
 		//Some logic goes here
+		NewPb5 myProblem = new NewPb5();
+
+		System.out.println("Here is my linked list");
+		System.out.println(myProblem);
 	}
 
 	//Random routine goes here
