@@ -37,25 +37,38 @@ public class NewPb4 {
 	{
 		String output = ""; 
 		Node currNode = num1;
+		int number1, number2, sum;
+		int ratio;
 		
 		output += "(";
+		number1 = 0;
+		ratio = 1;
 		while (currNode != null)
 		{
 			output += currNode.data;
+			number1 += currNode.data * ratio;
+			ratio = ratio * 10;
 			if (currNode.next != null)
 				output += "->";
 			currNode = currNode.next;
 		}
 		output += ") + (";
 		currNode = num2;
+		number2 = 0;
+		ratio = 1;
 		while (currNode != null)
 		{
 			output += currNode.data;
+			number2 += currNode.data * ratio;
+			ratio = ratio * 10;
 			if (currNode.next != null)
 				output += "->";
 			currNode = currNode.next;
 		}
 		output += ")";
+		
+		sum = number1 + number2;
+		output = "Normal humans would say: " + number1 + " + " + number2 + " = " + sum + " but this coding problem does...\n" + output;
 
 		return output;
 	}
