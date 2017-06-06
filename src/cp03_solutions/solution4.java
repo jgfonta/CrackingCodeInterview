@@ -1,5 +1,7 @@
 package cp03_solutions;
 
+import java.util.Stack;
+
 //3.4 In the classic problem of the Towers of Hanoi, you have 3 rods and N disks of 
 //different sizes which can slide onto any tower. The puzzle starts with disks sorted 
 //in ascending order of size from top to bottom (e.g., each disk sits on top of an 
@@ -23,59 +25,75 @@ package cp03_solutions;
 //3. Again we know we can move the top two disks around, so let’s move them from 
 //Rod 2 to Rod 3.
 //This approach leads to a natural recursive algorithm:
-//1 public static void main(String[] args)
-//2 int n = 5;
-//3 Tower[] towers = new Tower[n];
-//4 for (int i = 0; i < 3; i++) towers[i] = new Tower(i);
-//5 for (int i = n - 1; i >= 0; i--) towers[0].add(i);
-//6 towers[0].moveDisks(n, towers[2], towers[1]);
-//7 }
-//8
-//9 public class Tower {
-//10 private Stack<Integer> disks;
-//11 private int index;
-//12 public Tower(int i) {
-//13 disks = new Stack<Integer>();
-//14 index = i;
-//15 }
-//16
-//17 public int index() {
-//18 return index;
-//19 }
-//20
-//21 public void add(int d) {
-//22 if (!disks.isEmpty() && disks.peek() <= d) {
-//23 System.out.println(“Error placing disk ” + d);
-//24 } else {
-//25 disks.push(d);
-//26 }
-//27 }
-//28
-//29 public void moveTopTo(Tower t) {
-//30 int top = disks.pop();
-//31 t.add(top);
-//32 System.out.println(“Move disk ” + top + “ from ” + index() +
-//33 “ to ” + t.index());
-//34 }
-//35
-//36 public void print() {
-//37 System.out.println(“Contents of Tower “ + index());
-//38 for (int i = disks.size() - 1; i >= 0; i--) {
-//39 System.out.println(“ “ + disks.get(i));
-//40 }
-//41 }
-//42
-//43 public void moveDisks(int n, Tower destination, Tower buffer) {
-//44 if (n > 0) {
-//45 moveDisks(n - 1, buffer, destination);
-//46 moveTopTo(destination);
-//47 buffer.moveDisks(n - 1, destination, this);
-//48 }
-//49 }
-//50 }
+
 
 	
 
 public class solution4 {
+	
+	 Stack<Integer> tower1;
+	 Stack<Integer> tower2;
+	 Stack<Integer> tower3;
+	 
+	 public solution4() 
+	 {
+		 tower1 = new Stack<Integer>();
+		 tower2 = new Stack<Integer>();
+		 tower3 = new Stack<Integer>();
+		 
+		 //Fill tower 1 with data
+		 for (int i = 5; i >= 0; i--) 
+			 tower1.push(i);
+
+	 }
+
+	 public void moveTopTo(Stack<Integer> t) 
+	 {
+		 int top = t.pop();
+		 t.add(top);
+	 }
+
+	 public void print() 
+	 {
+		 System.out.println("Contents of Tower 1");
+		 for (int i = tower1.size() - 1; i >= 0; i--) 
+		 {
+			 System.out.println(" " + tower1.get(i));
+		 }
+		 
+		 System.out.println("Contents of Tower 2");
+		 for (int i = tower2.size() - 1; i >= 0; i--) 
+		 {
+			 System.out.println(" " + tower2.get(i));
+		 }
+
+		 System.out.println("Contents of Tower 3");
+		 for (int i = tower3.size() - 1; i >= 0; i--) 
+		 {
+			 System.out.println(" " + tower3.get(i));
+		 }
+
+	 }
+	
+	 public void moveDisks(int n, Stack<Integer> start, Stack<Integer> destination, Stack<Integer> buffer) 
+	 {
+		 if (n > 0) 
+		 {
+			 moveDisks(n - 1, start, buffer, destination);
+			 moveTopTo(destination);
+			 moveDisks(n - 1, start, destination, start);
+		 }
+	 }
+	 
+	 public static void main(String[] args)
+	 {
+		 int n = 5;
+		 solution4 myProblem = new solution4();
+		 
+		 //Start to move the data
+		 myProblem.moveDisks(myProblem.tower1.size(),myProblem.tower1, myProblem.tower3, myProblem.tower2);
+		 
+	 }
+
 
 }
