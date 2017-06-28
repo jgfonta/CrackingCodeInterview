@@ -16,9 +16,45 @@ import java.util.*;
 
 public class problem3 {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	SetOfStacks waiterArm;
+
+	
+	public problem3()
+	{
+		waiterArm = new SetOfStacks(10);
+	}
+	
+
+	public void createStacks()
+	{
+		Random myRando = new Random();
+		for (int i = 0; i < 100; i++)
+		{
+			waiterArm.push(myRando.nextInt(1000));
+		}
+	}
+	
+	public void printStacks()
+	{
+		int lines = 0;
+		int currMin;
+		System.out.println("Stack has the following:");
+		while (waiterArm.hasNext())
+		{
+			System.out.print("Entry(" + lines + ")=" + waiterArm.pop() + "\t");
+			lines++;
+			if (lines % 5 == 0)
+				System.out.print("\n");
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		
+		System.out.println("Hi & Welcome to another exciting programming problem!");
+		problem3 myProblem = new problem3();
+		myProblem.createStacks();
+		myProblem.printStacks();
 
 	}
-
 }
