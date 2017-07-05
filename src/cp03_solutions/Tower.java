@@ -16,6 +16,7 @@ public class Tower {
 			 index = i;
 		 }
 	
+		 //Returns the tower number (fixed constant)
 		 public int index() 
 		 {
 			 return index+1;
@@ -60,22 +61,6 @@ public class Tower {
 			 }
 		 }
 		 
-		 public static void main(String[] args)
-		 {
-			 int n = 5;
-			 Tower[] towers = new Tower[n];
-
-			 //Build 3 towers
-			 for (int i = 0; i < 3; i++) 
-				 towers[i] = new Tower(i);
-
-			 //Fill tower 1 with data
-			 for (int i = n ; i > 0; i--) 
-				 towers[0].add(i);
-			 
-			 //Start to move the data
-			 towers[0].moveDisks(n, towers[2], towers[1]);
-		 }
 
 
 }

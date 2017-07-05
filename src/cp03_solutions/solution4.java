@@ -27,72 +27,25 @@ import java.util.Stack;
 //This approach leads to a natural recursive algorithm:
 
 
-	
-
 public class solution4 {
 	
-	 Stack<Integer> tower1;
-	 Stack<Integer> tower2;
-	 Stack<Integer> tower3;
-	 
-	 public solution4() 
-	 {
-		 tower1 = new Stack<Integer>();
-		 tower2 = new Stack<Integer>();
-		 tower3 = new Stack<Integer>();
-		 
-		 //Fill tower 1 with data
-		 for (int i = 5; i >= 0; i--) 
-			 tower1.push(i);
-
-	 }
-
-	 public void moveTopTo(Stack<Integer> t) 
-	 {
-		 int top = t.pop();
-		 t.add(top);
-	 }
-
-	 public void print() 
-	 {
-		 System.out.println("Contents of Tower 1");
-		 for (int i = tower1.size() - 1; i >= 0; i--) 
-		 {
-			 System.out.println(" " + tower1.get(i));
-		 }
-		 
-		 System.out.println("Contents of Tower 2");
-		 for (int i = tower2.size() - 1; i >= 0; i--) 
-		 {
-			 System.out.println(" " + tower2.get(i));
-		 }
-
-		 System.out.println("Contents of Tower 3");
-		 for (int i = tower3.size() - 1; i >= 0; i--) 
-		 {
-			 System.out.println(" " + tower3.get(i));
-		 }
-
-	 }
+	//Solution is in Tower class
 	
-	 public void moveDisks(int n, Stack<Integer> start, Stack<Integer> destination, Stack<Integer> buffer) 
-	 {
-		 if (n > 0) 
-		 {
-			 moveDisks(n - 1, start, buffer, destination);
-			 moveTopTo(destination);
-			 moveDisks(n - 1, start, destination, start);
-		 }
-	 }
-	 
 	 public static void main(String[] args)
 	 {
 		 int n = 5;
-		 solution4 myProblem = new solution4();
+
+		 //Build 3 towers
+		 Tower[] towers = new Tower[3];
+		 for (int i = 0; i < 3; i++) 
+			 towers[i] = new Tower(i);
+
+		 //Fill tower 1 with data
+		 for (int i = n ; i > 0; i--) 
+			 towers[0].add(i);
 		 
-		 //Start to move the data
-		 myProblem.moveDisks(myProblem.tower1.size(),myProblem.tower1, myProblem.tower3, myProblem.tower2);
-		 
+		 //Start to move the data between towers
+		 towers[0].moveDisks(n, towers[2], towers[1]);
 	 }
 
 
