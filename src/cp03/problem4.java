@@ -11,123 +11,142 @@ import java.util.*;
 
 public class problem4 {
 
-	LinkedList<Integer> poleOne;
-	LinkedList<Integer> poleTwo;
-	LinkedList<Integer> poleThree;
+	LinkedList<Integer>[] pole;
 	
 	
-	static final int MAXDISKS = 5;
+	static final int MAXDISKS = 6;
+	static final int NUMPOLES = 3;
+	
+	int numMoves;
 	
 	public problem4()
 	{
-		poleOne = new LinkedList<Integer>();
-		poleTwo = new LinkedList<Integer>();
-		poleThree = new LinkedList<Integer>();
+		numMoves = 0;
+		pole = new LinkedList[NUMPOLES];
+		for (int i = 0; i<NUMPOLES;i++)
+		{
+			pole[i] = new LinkedList<Integer>();
+		}
 		
 		//Initialize first pole with n entries
 		for (int i = MAXDISKS; i > 0; i--)
 		{
-			poleOne.add(i);			
+			pole[0].push(i);			
 		}
 		
 	}
 	
 	
-	public void moveDisk(LinkedList<Integer> start, LinkedList<Integer> aux, LinkedList<Integer> dest)
-	{
-		Integer temp = start.pop();
-		// Base case - Move one ring
-		if (start.size() == 0)
-		{
-			dest.push(temp);
-		}
-		else
-		{
-	      // Move n - 1 rings from starting peg to auxiliary peg
-		  moveDisk(start,dest,aux);
-	      // Move nth ring from starting peg to ending peg
-		  dest.push(aux.pop());
-	      // Move n - 1 rings from auxiliary peg to ending peg
-		  moveDisk(aux,start,dest);
-		}
-	}
-	
-	  public static void doTowers(
-		         int n,              // Number of rings to move
-		         int startPeg,       // Peg containing rings to move
-		         int auxPeg,         // Peg holding rings temporarily
-		         int endPeg      )   // Peg receiving rings being moved
-		  {
-		    if (n == 1) // Base case - Move one ring
-		      System.out.println("Move ring " + n + " from peg " + startPeg
-		                          + " to peg " + endPeg);
-		    else
-		    {
-		      // Move n - 1 rings from starting peg to auxiliary peg
-		      doTowers(n - 1, startPeg, endPeg, auxPeg);
-
-		      // Move nth ring from starting peg to ending peg
-		      System.out.println("Move ring " + n + " from peg " + startPeg
-		                          + " to peg " + endPeg);
-		 
-		      // Move n - 1 rings from auxiliary peg to ending peg
-		      doTowers(n - 1, auxPeg, startPeg, endPeg);
-		    }
-		  }
-	
-	
+		
 	public void printPoles()
 	{
-		int height = 0;
-		Integer[]pole1, pole2, pole3;
-		
-		pole1 = null;
-		pole2 = null;
-		pole3 = null;
-		
-		if (poleOne != null)
-			pole1 = poleOne.toArray(new Integer[0]);
-		if (poleTwo != null)
-			pole2 = poleTwo.toArray(new Integer[0]);
-		if (poleThree != null)
-			pole3 = poleThree.toArray(new Integer[0]);
-		
-		if (pole1 != null && height < pole1.length)
-			height = pole1.length;
-		if (pole2 != null && height < pole2.length)
-			height = pole2.length;
-		if (pole3 != null && height < pole3.length)
-			height = pole3.length;
 
-		
-		for (int i = height; i > 0; i--)
+		Integer[][] tempPoles = new Integer[NUMPOLES][];
+
+		if (numMoves > 0 )
+			System.out.println("Move #" + numMoves);
+		numMoves++;
+	
+		//Convert to array for each pole
+		for (int j = 0; j < NUMPOLES; j++)
 		{
-			if (pole1 != null && i <= pole1.length)
-				System.out.print("  " + pole1[i-1]);
-			else 
-				System.out.print("  |");
-			System.out.print("\t");
-			if (pole2 != null && i <= pole2.length)
-				System.out.print("  " + pole2[i-1]);
-			else 
-				System.out.print("  |");
-			System.out.print("\t");
-			if (pole3 != null && i <= pole3.length)
-				System.out.print("  " + pole3[i-1]);
-			else 
-				System.out.print("  |");
+			if (!pole[j].isEmpty())
+			{
+				tempPoles[j] = new Integer [pole[j].size()];
+			    pole[j].toArray(tempPoles[j]);
+			}
+			else
+				tempPoles[j] = null;
+		}
+		
+		//Loop through the maximum height of a pole
+		for (int i = MAXDISKS - 1; i >= 0; i--)
+		{
+			//Loop through the poles at this height
+			for (int j = 0; j < NUMPOLES; j++)
+			{
+				if (tempPoles[j] != null && tempPoles[j].length >= (i + 1))
+					System.out.print("  " + tempPoles[j][tempPoles[j].length-1-i]);
+				else
+					System.out.print("  |");
+				System.out.print("\t");
+			}
 			System.out.print("\n");
 		}
 		
-		System.out.println("Pole 1\tPole 2\tPole 3");
+		System.out.println("Pole 1\tPole 2\tPole 3\n");
+	}
+	
+	public void moveIt()
+	{
+		try
+		{
+			moveDisk();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public void freelarge(LinkedList<Integer> start, LinkedList<Integer> aux,  LinkedList<Integer> dest) throws Exception
+	{
+		if (!dest.isEmpty() && dest.peek() < start.peek())
+			throw new Exception ("Error freelarge 1");
+		dest.push(start.pop());
+		printPoles();		
+
+		if (!aux.isEmpty() && aux.peek() < start.peek())
+			throw new Exception ("Error freelarge 2");
+
+		aux.push(start.pop());
+		printPoles();
+		
+		if (!aux.isEmpty() && aux.peek() < dest.peek())
+			throw new Exception ("Error freelarge 3");
+		aux.push(dest.pop());
+		printPoles();	
+
+	}
+	public void moveDisk() throws Exception
+	{		
+		LinkedList<Integer> start, aux, dest;
+					
+		int startNdx = 0;
+		
+		//Loop until all disks transferred to last pole from first pole
+		while(pole[2].size() != MAXDISKS)
+		{
+			start = pole[startNdx % 3];
+			aux = pole[(startNdx + 1) % 3];
+			dest = pole[(startNdx + 2) % 3];		
+			freelarge(start,aux,dest);
+			
+			//Need to swap differently periodically
+			if (start.isEmpty() || (!dest.isEmpty() && dest.peek() < start.peek()))
+			{
+				//This handles the end case when all members are moved and nothing to do
+				if (!dest.isEmpty())
+				{
+					start.push(dest.pop());
+					printPoles();
+				}
+			}
+			else 
+			{
+				dest.push(start.pop());
+				printPoles();
+			}
+			startNdx++;
+		}
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		problem4 myProblem = new problem4();
 				
 		myProblem.printPoles();
+		myProblem.moveIt();
 		
 
 	}
