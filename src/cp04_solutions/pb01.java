@@ -79,7 +79,7 @@ public class pb01 {
 	    anotherTree.add("a");
 	    anotherTree.add("c");
 	    
-	    System.out.println("Check #2 balanced (true): " + isBalanced(anotherTree.root) );	
+	    System.out.println("Check #2 balanced (false): " + isBalanced(anotherTree.root) );	
 	    
 	    anotherTree.add("h");
 
